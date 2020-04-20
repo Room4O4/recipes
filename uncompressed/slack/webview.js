@@ -20,17 +20,13 @@ const getTeamIcon = function getTeamIcon(count = 0) {
       bgUrl = /^url\((['"]?)(.*)\1\)$/.exec(bgUrl);
       bgUrl = bgUrl ? bgUrl[2] : '';
     }
-
-    setTimeout(() => {
-      document.querySelector('.ReactModal__Overlay').click();
-    }, 10);
   }
 
   countTeamIconCheck += 1;
 
   if (bgUrl) {
     _electron.ipcRenderer.sendToHost('avatar', bgUrl);
-  } else if (countTeamIconCheck <= 5) {
+  } else if (countTeamIconCheck <= 3) {
     setTimeout(() => {
       getTeamIcon(countTeamIconCheck + 1);
     }, 2000);
@@ -47,8 +43,6 @@ module.exports = Franz => {
   };
 
   Franz.loop(getMessages);
-  setTimeout(() => {
-    getTeamIcon();
-  }, 4000);
+  getTeamIcon();
   Franz.injectCSS(_path.default.join(__dirname, 'service.css'));
 };
